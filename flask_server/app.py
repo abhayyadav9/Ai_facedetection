@@ -194,63 +194,63 @@ def detect_user():
     
     
 # #automatic matiching algorithm
-# @app.route('/matching', methods=['POST'])
-# def detect_user():
-#     try:
-#         # Check if the image is provided as a file (multipart/form-data)
-#         if 'image' in request.files:
-#             image = request.files['image']
-#             temp_image_path = f"temp_detect_{image.filename}"
-#             image.save(temp_image_path)
-#         # Otherwise, check if it's provided as a base64-encoded JSON property
-#         elif request.is_json and 'image' in request.json:
-#             image_data = request.json['image']
-#             # Remove header if present (e.g. "data:image/jpeg;base64,")
-#             if ',' in image_data:
-#                 image_data = image_data.split(",")[-1]
-#             temp_image_path = "temp_detect.jpg"
-#             with open(temp_image_path, "wb") as f:
-#                 f.write(base64.b64decode(image_data))
-#         else:
-#             return jsonify({'error': 'No image provided'}), 400
+@app.route('/matching', methods=['POST'])
+def match_user():
+    try:
+        # Check if the image is provided as a file (multipart/form-data)
+        if 'image' in request.files:
+            image = request.files['image']
+            temp_image_path = f"temp_detect_{image.filename}"
+            image.save(temp_image_path)
+        # Otherwise, check if it's provided as a base64-encoded JSON property
+        elif request.is_json and 'image' in request.json:
+            image_data = request.json['image']
+            # Remove header if present (e.g. "data:image/jpeg;base64,")
+            if ',' in image_data:
+                image_data = image_data.split(",")[-1]
+            temp_image_path = "temp_detect.jpg"
+            with open(temp_image_path, "wb") as f:
+                f.write(base64.b64decode(image_data))
+        else:
+            return jsonify({'error': 'No image provided'}), 400
 
-#         # Get face encoding from the saved image
-#         detected_encodings = get_face_encoding(temp_image_path)
-#         os.remove(temp_image_path)
+        # Get face encoding from the saved image
+        detected_encodings = get_face_encoding(temp_image_path)
+        os.remove(temp_image_path)
 
-#         if not detected_encodings:
-#             return jsonify({'error': 'No face detected'}), 400
+        if not detected_encodings:
+            return jsonify({'error': 'No face detected'}), 400
 
-#         # Get all registered users from your database
-#         registered_users = list(users_collection.find({}))
+        # Get all registered users from your database
+        registered_users = list(users_collection.find({}))
 
-#         for user in registered_users:
-#             stored_encoding = np.array(user['face_encoding'])
+        for user in registered_users:
+            stored_encoding = np.array(user['face_encoding'])
             
-#             # Compare the detected face with stored encoding
-#             matches = face_recognition.compare_faces(
-#                 [stored_encoding],
-#                 detected_encodings[0],
-#                 tolerance=0.4
-#             )
+            # Compare the detected face with stored encoding
+            matches = face_recognition.compare_faces(
+                [stored_encoding],
+                detected_encodings[0],
+                tolerance=0.4
+            )
 
-#             if True in matches:
-#                 # Return the matching user's details (without sensitive data)
-#                 return jsonify({
-#                     'user': {
-#                         'name': user['name'],
-#                         'roll_number': user['roll_number'],
-#                         'email': user['email'],
-#                         'phone': user['phone'],
-#                         'age': user['age'],
-#                         'image': user['image']
-#                     }
-#                 }), 200
+            if True in matches:
+                # Return the matching user's details (without sensitive data)
+                return jsonify({
+                    'user': {
+                        'name': user['name'],
+                        'roll_number': user['roll_number'],
+                        'email': user['email'],
+                        'phone': user['phone'],
+                        'age': user['age'],
+                        'image': user['image']
+                    }
+                }), 200
 
-#         return jsonify({'message': 'No matching user found'}), 404
+        return jsonify({'message': 'No matching user found'}), 404
 
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 
