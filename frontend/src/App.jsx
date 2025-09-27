@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Registration from './page/Registration';
 import AttendanceTable from './page/AttendanceTable';
 import FaceMatching from './page/FaceMatching';
+import AllStudents from './page/AllStudents';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/attendance-table" element={<AttendanceTable />} />
         <Route path="/automatic-matching" element={<FaceMatching />} />
+                <Route path="/all-student" element={<AllStudents/>} />
+
 
 
 

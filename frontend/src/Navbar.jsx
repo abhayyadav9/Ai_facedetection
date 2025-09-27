@@ -1,72 +1,78 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-gradient-to-r from-blue-800 to-indigo-700 shadow-md fixed w-full z-50 mt-0">
+    <nav className="bg-gradient-to-r from-indigo-700 to-purple-700 shadow-lg fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo and Desktop Menu */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <img className="h-10 w-10" src="/logo.png" alt="Logo" />
-              <span className="ml-3 font-bold text-2xl text-white">BrandName</span>
-            </Link>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                to="/"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
+        <div className="flex justify-between h-16 items-center">
+          {/* Brand */}
+          <Link
+            to="/"
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            <motion.img
+              src="/logo.png"
+              alt="Logo"
+              className="h-10 w-10"
+              initial={{ rotate: -180, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              transition={{ duration: 0.7 }}
+            />
+            <motion.span
+              className="font-extrabold text-2xl text-white tracking-wide"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Smart<span className="text-yellow-400">Attend</span>
+            </motion.span>
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden sm:flex space-x-8 ml-auto">
+            {[
+              { name: "Home", to: "/" },
+              { name: "Recognition", to: "/face-recoginition" },
+              { name: "Registration", to: "/registration" },
+              { name: "Attendance", to: "/attendance-table" },
+              { name: "Automatic", to: "/automatic-matching" },
+              { name: "All Students", to: "/all-student" },
+            ].map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
-                Home
-              </Link>
-              <Link
-                to="/face-recoginition"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
-              >
-                Recognition
-              </Link>
-              <Link
-                to="/registration"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
-              >
-                Registration
-              </Link>
-              <Link
-                to="/attendance-table"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
-              >
-                Attendance
-              </Link>
-              <Link
-                to="/automatic-matching"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
-              >
-                Autmatic
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center px-1 pt-1 text-white hover:text-gray-300 border-b-2 border-transparent hover:border-white transition"
-              >
-                Contact
-              </Link>
-            </div>
+                <Link
+                  to={item.to}
+                  className="text-white font-medium hover:text-yellow-300 border-b-2 border-transparent hover:border-yellow-300 transition-all duration-300"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
+            ))}
           </div>
-          {/* Mobile menu button */}
-          <div className="flex items-center sm:hidden">
+
+          {/* Mobile Menu Button */}
+          <div className="flex sm:hidden">
             <button
               onClick={toggleMenu}
-              type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 hover:bg-blue-700 focus:outline-none focus:bg-blue-700 focus:text-gray-300 transition"
+              className="text-white hover:text-yellow-300 focus:outline-none"
             >
-              <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <svg className="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -75,7 +81,12 @@ const Navbar = () => {
                   />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -88,36 +99,34 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* Mobile Menu */}
+
+      {/* Mobile Dropdown Menu */}
       {isOpen && (
-        <div className="sm:hidden">
-          <div className="pt-2 pb-3 space-y-1">
-            <Link
-              to="/"
-              className="block pl-3 pr-4 py-2 border-l-4 border-white bg-indigo-800 text-base font-medium text-white transition"
-            >
-              Home
-            </Link>
-            <Link
-              to="/facerecognition"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-indigo-600 hover:border-white transition"
-            >
-              Recognition
-            </Link>
-            <Link
-              to="/registration"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-indigo-600 hover:border-white transition"
-            >
-              Registration
-            </Link>
-            <Link
-              to="/contact"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-indigo-600 hover:border-white transition"
-            >
-              Contact
-            </Link>
+        <motion.div
+          className="sm:hidden bg-indigo-800"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="px-2 pt-2 pb-3 space-y-2">
+            {[
+              { name: "Home", to: "/" },
+              { name: "Recognition", to: "/face-recoginition" },
+              { name: "Registration", to: "/registration" },
+              { name: "Attendance", to: "/attendance-table" },
+              { name: "Automatic", to: "/automatic-matching" },
+              { name: "All Students", to: "/all-student" },
+            ].map((item) => (
+              <Link
+                key={item.name}
+                to={item.to}
+                className="block px-3 py-2 rounded-md text-white hover:bg-indigo-600 hover:text-yellow-300 transition-all"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
-        </div>
+        </motion.div>
       )}
     </nav>
   );
