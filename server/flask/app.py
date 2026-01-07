@@ -38,6 +38,7 @@ def check_server():
     return "Server running with DeepFace!"
 
 
+
 # ------------------ REGISTER -------------------
 @app.route("/register", methods=["POST"])
 def register_user():
